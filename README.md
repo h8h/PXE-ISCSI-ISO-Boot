@@ -17,7 +17,9 @@ I found out that iscsi can also include iso files. This works so easy that I mad
 build it:
 --------
 `git clone github.com/h8h/PXE-ISCSI-ISO-Boot`
+
 `cd PXE-ISCSI-ISO-Boot/`
+
 `docker build -t ipxeisoboot .`
 
 run it:
