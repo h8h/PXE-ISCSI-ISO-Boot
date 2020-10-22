@@ -1,0 +1,30 @@
+FROM debian:buster-slim AS ipxe
+
+RUN apt-get update && apt-get install -y git build-essential liblzma-dev pxelinux syslinux-common
+
+ADD assets/boot.ipxe /
+
+RUN git clone git://git.ipxe.org/ipxe.git &&\
+    cd ipxe/src &&\
+    make bin/undionly.kpxe EMBED=/boot.ipxe &&\
+    make bin/ipxe.lkrn EMBED=/boot.ipxe
+
+FROM debian:buster-slim 
+
+COPY --from=ipxe ipxe/src/bin/undionly.kpxe /srv/tftp/
+COPY --from=ipxe /usr/lib/syslinux/modules/bios/* /srv/tftp/
+COPY --from=ipxe /usr/lib/PXELINUX/pxelinux.0 /srv/tftp 
+
+RUN apt-get update && apt-get install -y tgt tftpd-hpa python3 tini
+
+ADD assets/init.py /
+COPY assets/pxelinux.cfg/default /srv/tftp/pxelinux.cfg/
+
+COPY --from=ipxe ipxe/src/bin/ipxe.lkrn /srv/tftp/
+
+EXPOSE 69/udp
+EXPOSE 80/tcp
+EXPOSE 3260/tcp
+
+ADD assets/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/usr/bin/tini", "--", "/entrypoint.sh"]

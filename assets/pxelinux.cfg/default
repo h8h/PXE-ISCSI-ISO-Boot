@@ -1,0 +1,4 @@
+DEFAULT -
+LABEL -
+MENU LABEL Load iPXE (for faster installs)
+  KERNEL ipxe.lkrn
