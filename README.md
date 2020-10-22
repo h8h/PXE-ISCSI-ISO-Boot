@@ -1,4 +1,4 @@
-# IPXE ISCSI Bootloader - Load varios iso files
+# (i)PXE ISCSI ISO Boot - Load various iso files
 
 Motivation
 ----------
