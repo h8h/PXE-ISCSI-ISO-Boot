@@ -20,6 +20,12 @@ build it:
 
 `cd PXE-ISCSI-ISO-Boot/`
 
+modify at least the ip address and point it to your docker host's external ip address:
+
+* `vi assets/boot.ipxe` in line 3
+
+* `vi assets/init.py` in line 29
+
 `docker build -t ipxeisoboot .`
 
 run it:
