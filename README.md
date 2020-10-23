@@ -42,6 +42,31 @@ use it:
 
 Now place iso files in `/iso` on your local machine. Recreate (remove + run) the container again to create the new configurations.
 
+how it works:
+-------------
+1. Your DHCP Server tells the PXE Client to load a `pxelinux.0` at your docker host's external ip address.
+2. The PXE Client calls tftp://pxelinux.0 and receives the file and loads it into memory.
+3. This boots up a PXE Bootloader which tells where the ipxe KERNEL (`ipxe.lkrn`) is (see `assets/pxelinux.cfg/default`).
+4. The PXE Bootloader calls tftp://ipxe.lkrn and loads it into memory. Now the PXE client is an ipxe client.
+5. The ipxe client has an embedded script (see `assets/boot.ipxe`) and runs it. 
+6. The ipxe client runs dhcp.
+7. The ipxe client calls http://x.x.x.x/
+8. This triggers the small python3 web server which is already packed into the docker image.
+9. The web server returns a list of all available ISO files in the folder `/iso`, see below.
+10. Now the user choose one of the items of the ipxe boot loader.
+11. Once chosen a request is made (`sanboot`) to the iscsi target (also packed in the docker image).
+12. The iscsi hands over block by block the iso file. 
+13. The system gets loaded.
+
+You can shorten the path (2-4) if you already have ipxe clients. For that point your DHCP to the bootfile: `undionly.kpxe`
+
+Features:
+--------
+* A web interface to upload iso files to
+* A central ip address configuration
+* SSL support (Trusted CA)
+* UEFI (I don't need it right now. Please file up a issue)
+
 screenshot it:
 ----------
 ![LiveBoot](/example.png?raw=true "Live ISO Boot")
