@@ -60,7 +60,7 @@ how it works:
 
 You can shorten the path (2-4) if you already have ipxe clients. For that point your DHCP to the bootfile: `undionly.kpxe`
 
-Features:
+Wishlist:
 --------
 * A web interface to upload iso files to
 * A central ip address configuration
