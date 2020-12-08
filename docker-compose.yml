@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  ipxe-iscsi:
+    hostname: ipxeboot
+    container_name: ipxeboot
+    build: .
+    ports: 
+      - 69:69/udp
+      - 80:80/tcp
+      - 3260:3260/tcp
+    volumes:
+      - /iso:/iso
+    environment:
+      - IPADDR=10.0.2.2
+    restart: unless-stopped

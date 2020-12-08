@@ -1,5 +1,7 @@
 #!bin/bash
 
+export IPADDR=$IPADDR
+
 for iso in `find /iso -name '*iso' -type f`; do
 	FILENAME=`basename $iso | sed 's/[_]/-/'`
 	echo "<target example.org:$FILENAME>"         >> /etc/tgt/targets.conf

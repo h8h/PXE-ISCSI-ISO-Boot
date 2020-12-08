@@ -1,5 +1,7 @@
 # (i)PXE ISCSI ISO Boot - Load various iso files
 
+The current state is: ALPHA
+
 Motivation
 ----------
 For laboratory and test purposes it often requires different operating systems and live disks. So I needed a tool that would simply provide ISO files on a network boot.
@@ -18,15 +20,15 @@ build it:
 --------
 `git clone github.com/h8h/PXE-ISCSI-ISO-Boot`
 
+
 `cd PXE-ISCSI-ISO-Boot/`
 
-modify at least the ip address and point it to your docker host's external ip address:
 
-* `vi assets/boot.ipxe` in line 3
+edit `docker-compose.yml` 
 
-* `vi assets/init.py` in line 29
 
-`docker build -t ipxeisoboot .`
+`docker-compose up --build -d`
+
 
 run it:
 -------
@@ -35,12 +37,30 @@ Point your DHCP - Server options (esp. next-server and (tftp)bootfile) to the do
 
 Then run docker:
 
+
+`docker-compose up --build -d`
+
+
+or
+
+
 `docker run -d --name ipxeboot --restart always -p 69:69/udp -p 80:80 -p 3260:3260 -v /iso:/iso ipxeisoboot:latest`
 
 use it:
 -------
 
 Now place iso files in `/iso` on your local machine. Recreate (remove + run) the container again to create the new configurations.
+
+develop it:
+------------
+First "run it"
+
+
+`docker cp ipxeboot:/srv/tftp .`
+
+
+`qemu-system-x86_64 -m 1024 -boot n -net nic -net user,tftp=tftp,bootfile=pxelinux.0`
+
 
 how it works:
 -------------
