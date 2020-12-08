@@ -1,3 +1,2 @@
 #!ipxe
 dhcp
-chain http://192.168.1.2/
