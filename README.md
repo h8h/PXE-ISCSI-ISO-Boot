@@ -2,6 +2,9 @@
 
 The current state is: ALPHA
 
+Known Bugs:
+  * most of the iso images are missing / searching the block device `/dev/cdrom` or `/dev/sr0` 
+
 Motivation
 ----------
 For laboratory and test purposes it often requires different operating systems and live disks. So I needed a tool that would simply provide ISO files on a network boot.
@@ -53,7 +56,7 @@ Now place iso files in `/iso` on your local machine. Recreate (remove + run) the
 
 develop it:
 ------------
-First "run it"
+`docker-compose up --build -d`
 
 
 `docker cp ipxeboot:/srv/tftp .`

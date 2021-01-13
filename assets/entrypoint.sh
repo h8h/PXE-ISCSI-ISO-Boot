@@ -12,10 +12,9 @@ for iso in `find /iso -name '*iso' -type f`; do
         echo "</target>"                              >> /etc/tgt/targets.conf
 done
 
-echo "chain http://$IPADDR" > /srv/ftp/boot.ipxe
+echo "APPEND dhcp && chain http://$IPADDR/" >> /srv/tftp/pxelinux.cfg/default
 
 /usr/sbin/in.tftpd --listen -L --address 0.0.0.0:69 --secure -vvv /srv/tftp& 
-
 
 tgtd -f & 
 sleep 5;\
